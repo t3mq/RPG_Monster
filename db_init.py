@@ -6,6 +6,7 @@ characters = db["characters"]
 monsters = db["monsters"]
 
 list_characters = [
+    { "name": "Guerrier", "atk": 15, "def": 10, "pv": 100 },
     { "name": "Mage", "atk": 20, "def": 5, "pv": 80 },
     { "name": "Archer", "atk": 18, "def": 7, "pv": 90 },
     { "name": "Voleur", "atk": 22, "def": 8, "pv": 85 },
