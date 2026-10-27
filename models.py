@@ -1,6 +1,6 @@
 class Entite():
     # Attributs du personnage : nom, attaque, defense, pv
-    def __init(self, name, attack, defense, pv):
+    def __init__(self, name, attack, defense, pv):
         self.name = name
         self.attack = attack
         self.defense = defense
@@ -10,7 +10,8 @@ class Entite():
     def is_alive(self):
         return self.pv > 0
 
-    # Fonction :
+    # faire une attaque
+    # définir to_attack(self, target) :
         # degats = attaque - defense
         # min 1 degats (sinon combat infinie)
         # on retire les degats à la cible
