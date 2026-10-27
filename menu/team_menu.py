@@ -45,16 +45,16 @@ def create_team():
         for character in team:
             print(character.name)
 
-        print("\nPersonnages disponibles:")
+        print("\nPersonnage disponibles :")
         for i, doc in enumerate(available, start=1):
             print(
                 f"{i}. {doc['name']} -"
-                f"ATK: {doc['atk']} -"
-                f"DEF: {doc['def']} -"
+                f"ATK : {doc['atk']} -"
+                f"DEF : {doc['def']} -"
                 f"PV: {doc['pv']}"
             )
 
-        choice = request_integer("Choisissez un personnage: ", 1, len(available))
+        choice = request_integer("Choisissez un personnage :", 1, len(available))
 
         doc = available.pop(choice - 1)
 
@@ -64,3 +64,6 @@ def create_team():
             doc["def"],
             doc["pv"]
         )
+
+        team.append(character)
+    return team

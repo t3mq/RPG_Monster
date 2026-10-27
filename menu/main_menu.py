@@ -44,7 +44,7 @@ def start_menu():
         if (choice == 1):
             name = ask_name()
             team = create_team()
-            waves = start_game()
+            waves = start_game(team)
             save_score(name, waves)
             print(f"Parti terminée, {name} : {waves} vagues survécues")
         elif (choice == 2):
