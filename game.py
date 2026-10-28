@@ -1,5 +1,5 @@
-from models import Character, Monster
-from utils import get_db, get_random_monster
+from models import Monster
+from utils import get_random_monster
 import random
 
 # vérifier si l'équipe est toujours en vie
@@ -22,11 +22,12 @@ def create_monster():
     doc = get_random_monster()
     if not doc:
         return None
-    return {
-        "name": doc.get("name", "Monstre"),
-        "pv": doc.get("pv", 50),
-        "attack": doc.get("atk", 10)
-    }
+    return Monster(
+        doc.get("name", "Monstre"),
+        doc.get("atk", 10),
+        doc.get("def", 0),
+        doc.get("pv", 50)
+    )
 
 # gérer les attaques de la team sur les monstre
 # Pour chaque personnage de l'équipe
@@ -35,13 +36,10 @@ def create_monster():
 #       afficher le combat
 def handle_character_attacks(team, monster):
     for character in team:
-        if character.is_alive() and monster["pv"] > 0:
-            damage = getattr(character, "attack", getattr(character, "atk", 10))
-            monster["pv"] -= damage
-            if monster["pv"] < 0:
-                monster["pv"] = 0
+        if character.is_alive() and monster.is_alive():
+            damage = character.to_attack(monster)
 
-            print(f"{character.name} attaque {monster['name']} : {damage} dégâts, PV restants du monstre: {monster['pv']}")
+            print(f"{character.name} attaque {monster.name} : {damage} dégâts, PV restants du monstre : {monster.pv}")
 
 # gère les attaques du monstre sur une cible aléatoire
 # Filtre la liste pour obtenir uniquement les personnages vivant
@@ -55,16 +53,12 @@ def handle_monster_attacks(team, monster):
         return
 
     target = random.choice(alive)
-    damage = monster["attack"]
+    damage = monster.to_attack(target)
 
-    target.pv -= damage
-    if target.pv < 0:
-        target.pv = 0
-
-    print(f"{monster['name']} attaque {target.name} : {damage} dégâts, PV restant : {target.pv}")
+    print(f"{monster.name} attaque {target.name} : {damage} dégâts, PV restant : {target.pv}")
 
     if not target.is_alive():
-        print(f"character ({target.name}) est K.O")
+        print(f"{target.name} est K.O")
 
 # orchestre la boucle principale du jeu
 # initialiser le compteur de vague à 0
@@ -86,12 +80,12 @@ def start_game(team):
             break
 
         waves += 1
-        print(f"\n Vague {waves} : un {monster['name']} apparait (PV: {monster['pv']}, Attaque : {monster['attack']})")
+        print(f"\nVagues {waves} : un {monster.name} apparaît (PV : {monster.pv}, Attaque : {monster.attack}, Défense : {monster.defense})")
 
-        while monster['pv'] > 0 and team_alive(team):
+        while monster.is_alive() and team_alive(team):
             handle_character_attacks(team, monster)
 
-            if monster['pv'] <= 0:
+            if not monster.is_alive():
                 print("victoire")
                 break
 

@@ -48,17 +48,15 @@ def get_random_monster():
 # définir save_score(name, waves):
 #   insérer dans la collection "scores" un doc { "player": name, "waves": waves } (insert_one)
 def save_score(name, waves):
-    db = get_db()
     score_data = {
         "player": name,
         "waves": waves
     }
-    db["scores"].insert_one(score_data)
+    get_db()["scores"].insert_one(score_data)
 
 # Voir le top 3
 # définir get_top_scores():
 #   renvoyer la liste des scores triés par "vagues" décroissante, limités à 3
 #   (find().sort("waves", -1).limit(3), dans un list())
 def get_top_scores():
-    db = get_db()
-    return list(db["scores"].find().sort("waves", -1).limit(3))
+    return list(get_db()["scores"].find().sort("waves", -1).limit(3))
